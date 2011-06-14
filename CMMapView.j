@@ -81,12 +81,11 @@ var cmNamespace = nil;
         cmNamespace = domWin.CM;
         var cmScriptElement = domWin.document.createElement('script');
         domWin.mapsJsLoaded = function (map) {
-            console.log(map);
             _map = map;
             _DOMMapElement = domWin.document.getElementById('CMMapViewDiv');
             [self finishLoadMap];
         };
-        cmScriptElement.innerHTML = "var key = '" + _apiKey + "'; console.log(key); var cloudmade = new CM.Tiles.CloudMade.Web({key: key, styleId: 28647});  var map = new CM.Map('CMMapViewDiv', cloudmade); mapsJsLoaded(map);";
+        cmScriptElement.innerHTML = "var key = '" + _apiKey + "'; var cloudmade = new CM.Tiles.CloudMade.Web({key: key, styleId: 28647});  var map = new CM.Map('CMMapViewDiv', cloudmade); mapsJsLoaded(map);";
         domWin.document.getElementsByTagName('head')[0].appendChild(cmScriptElement);     
     }
 }
