@@ -31,7 +31,9 @@ var cmNamespace = nil;
     id          _delegate       @accessors(property=delegate);
     BOOL        hasLoaded;
     
-    JSObject    _map;
+    JSObject    _map;    
+    JSObject    _scaleControl;
+    JSObject    _largeMapControl;
 }
 
 
@@ -44,6 +46,9 @@ var cmNamespace = nil;
     {    
         _apiKey = apiKey;
         hasLoaded = NO;
+        
+        _largeMapControl = nil;
+        _scaleControl = nil;
         
         var bounds = [self bounds];
         [self setFrameLoadDelegate:self];
@@ -95,11 +100,7 @@ var cmNamespace = nil;
 //
 - (void)finishLoadMap
 {
-    var cm = [CMMapView cmNamespace];
-    
-    _map.addControl(new cm.ScaleControl());
-	var topRight = new cm.ControlPosition(cm.TOP_RIGHT, new cm.Size(10, 10));
-	_map.addControl(new cm.SmallMapControl(), topRight);	
+    var cm = [CMMapView cmNamespace];	
 
 	_map.setCenter(new cm.LatLng(51.514, -0.137), 5);
 
@@ -182,5 +183,56 @@ var cmNamespace = nil;
 - (JSObject)cmRepresentation
 {
     return _map;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+- (void)showScaleControl: (BOOL)shouldShow
+{
+    var cm = [CMMapView cmNamespace];	
+    
+    if (shouldShow)
+    {
+        if (_scaleControl == nil)
+        {
+            _scaleControl = new cm.ScaleControl()
+            _map.addControl(_scaleControl);
+        }
+    }
+    else
+    {
+        if (_scaleControl != nil)
+        {
+            _map.removeControl(_scaleControl);
+            _scaleControl = nil;
+        }
+    }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+- (void)showLargeMapControl: (BOOL)shouldShow
+{
+    var cm = [CMMapView cmNamespace];	
+    
+    if (shouldShow)
+    {
+        if (_largeMapControl == nil)
+        {
+	        var topRight = new cm.ControlPosition(cm.TOP_RIGHT, new cm.Size(2, 2));
+	        _largeMapControl = new cm.LargeMapControl();
+            _map.addControl(_largeMapControl, topRight);
+        }
+    }
+    else
+    {
+        if (_largeMapControl != nil)
+        {
+            _map.removeControl(_largeMapControl);
+            _largeMapControl = nil;
+        }
+    }
 }
 				
