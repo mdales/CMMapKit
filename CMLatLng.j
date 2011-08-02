@@ -33,7 +33,7 @@
 
 - (JSObject)cmRepresentation 
 {
-    var cm = [CMMapView cmNamespace];
+    var cm = [CMMapView2 cmNamespace];
     return new cm.LatLng(_latitude, _longitude);
 }
 

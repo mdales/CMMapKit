@@ -21,7 +21,7 @@
 
 - (JSObject)cmRepresentation
 {
-    var cm = [CMMapView cmNamespace];
+    var cm = [CMMapView2 cmNamespace];
     return new cm.LatLngBounds([_southWest cmRepresentation], [_northEast cmRepresentation])
 }
 

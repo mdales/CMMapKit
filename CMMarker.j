@@ -90,7 +90,7 @@
     if (_cmObject)
         return _cmObject;
     
-    var cm = [CMMapView cmNamespace];
+    var cm = [CMMapView2 cmNamespace];
     
     var options = {
         clickable: _clickable,

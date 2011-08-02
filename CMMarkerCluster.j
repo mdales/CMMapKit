@@ -14,7 +14,7 @@
     if (self = [super init])
     {
         // don't be lazy here, create the object immediately
-        var cm = [CMMapView cmNamespace];
+        var cm = [CMMapView2 cmNamespace];
         
         _cluster = cm.MarkerCluster([mapView cmRepresentation]);
     }
@@ -31,7 +31,7 @@
     if (self = [super init])
     {
         // don't be lazy here, create the object immediately
-        var cm = [CMMapView cmNamespace];
+        var cm = [CMMapView2 cmNamespace];
         
         _cluster = cm.MarkerCluster([mapView cmRepresentation], {clusterRadius: radius});
     }

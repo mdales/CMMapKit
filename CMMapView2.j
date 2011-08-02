@@ -7,31 +7,15 @@
 
 var cmNamespace = nil;
 
-@implementation CPWebView(ScrollFixes) {
-    - (void)loadHTMLStringWithoutMessingUpScrollbars:(CPString)aString
-    {
-        [self _startedLoading];
-        
-        _ignoreLoadStart = YES;
-        _ignoreLoadEnd = NO;
-    
-        _url = null;
-        _html = aString;
-    
-        [self _load];
-    }
-}
-@end
 
 
-
-@implementation CMMapView: CPWebView
+@implementation CMMapView2: CPView
 {
-    CPString    _apiKey;
     id          _delegate       @accessors(property=delegate);
-    BOOL        hasLoaded;
     
-    JSObject    _map;    
+    CPString    _apiKey;
+    
+    JSObject    _map;
     JSObject    _scaleControl;
     JSObject    _largeMapControl;
 }
@@ -51,8 +35,17 @@ var cmNamespace = nil;
         _scaleControl = nil;
         
         var bounds = [self bounds];
-        [self setFrameLoadDelegate:self];
-        [self loadHTMLStringWithoutMessingUpScrollbars:@"<html><head><script type=\"text/javascript\" src=\"http://tile.cloudmade.com/wml/latest/web-maps-lite.js\"></script></head><body style='padding:0px; margin:0px'><div id='CMMapViewDiv' style='left: 0%; top: 0%; width: 100%; height: 100%'></div></body></html>"];       
+        
+        var _div = document.createElement("div");
+        _div.style.width = "100%";
+        _div.style.height = "100%";
+        _div.style.background = "#00ff00";
+        _div.id = "CMMapViewDiv";
+        
+        self._DOMElement.appendChild(_div);    
+        
+        setTimeout(function() { [self finishLoadMap];}, 0);
+            
     }
     
     return self    
@@ -60,52 +53,14 @@ var cmNamespace = nil;
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-- (void)webView:(CPWebView)aWebView didFinishLoadForFrame:(id)aFrame 
-{
-    if (hasLoaded)
-        return;        
-    hasLoaded = YES;    
-
-    [self loadInitialMap];
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-//
-- (void)loadInitialMap() 
-{
-    var domWin = [self DOMWindow];
-
-    if (typeof(domWin.CM) === 'undefined') 
-    {
-        domWin.window.setTimeout(function() {[self loadInitialMap];}, 100);
-    } 
-    else 
-    {
-        cmNamespace = domWin.CM;
-        var cmScriptElement = domWin.document.createElement('script');
-        domWin.mapsJsLoaded = function (map) {
-            _map = map;
-            _DOMMapElement = domWin.document.getElementById('CMMapViewDiv');
-            [self finishLoadMap];
-        };
-        cmScriptElement.innerHTML = "var key = '" + _apiKey + "'; var cloudmade = new CM.Tiles.CloudMade.Web({key: key, styleId: 28647});  var map = new CM.Map('CMMapViewDiv', cloudmade); mapsJsLoaded(map);";
-        domWin.document.getElementsByTagName('head')[0].appendChild(cmScriptElement);     
-    }
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-//
 - (void)finishLoadMap
 {
-    var cm = [CMMapView cmNamespace];	
     
-    console.log(_DOMMapElement);
-    document.blah = _DOMMapElement;
-
-	_map.setCenter(new cm.LatLng(51.514, -0.137), 5);
-
+    var cloudmade = new CM.Tiles.CloudMade.Web({key: _apiKey, styleId: 28647});  
+    _map = new CM.Map('CMMapViewDiv', cloudmade);
+        
+    _map.setCenter(new CM.LatLng(51.514, -0.137), 5);
+	    
 	if (_delegate && [_delegate respondsToSelector:@selector(mapViewIsReady:)]) 
 	{
         [_delegate mapViewIsReady:self];
@@ -113,11 +68,13 @@ var cmNamespace = nil;
 }
 
 
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 + (JSObject)cmNamespace 
 {
-    return cmNamespace;
+    console.log(CM);
+    return CM;
 }
 
 
@@ -200,7 +157,7 @@ var cmNamespace = nil;
 //
 - (void)showScaleControl: (BOOL)shouldShow
 {
-    var cm = [CMMapView cmNamespace];	
+    var cm = [CMMapView2 cmNamespace];	
     
     if (shouldShow)
     {
@@ -225,7 +182,7 @@ var cmNamespace = nil;
 //
 - (void)showLargeMapControl: (BOOL)shouldShow
 {
-    var cm = [CMMapView cmNamespace];	
+    var cm = [CMMapView2 cmNamespace];	
     
     if (shouldShow)
     {
@@ -246,3 +203,6 @@ var cmNamespace = nil;
     }
 }
 				
+
+
+@end

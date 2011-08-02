@@ -35,7 +35,7 @@
     if (_cmObject)
         return _cmObject;
     
-    var cm = [CMMapView cmNamespace];
+    var cm = [CMMapView2 cmNamespace];
    
     var list = [];
     for (var i = 0; i < [_pointArray count]; i++)

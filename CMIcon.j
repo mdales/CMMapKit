@@ -22,7 +22,7 @@
 
 - (JSObject)cmRepresentation
 {
-    var cm = [CMMapView cmNamespace];
+    var cm = [CMMapView2 cmNamespace];
 
 	var icon = new cm.Icon();
     icon.image = _imageURL;
