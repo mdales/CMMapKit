@@ -229,7 +229,7 @@ var cmNamespace = nil;
     {
         if (_largeMapControl == nil)
         {
-	        var topRight = new cm.ControlPosition(cm.TOP_RIGHT, new cm.Size(2, 2));
+	        var topRight = new cm.ControlPosition(cm.TOP_LEFT, new cm.Size(2, 2));
 	        _largeMapControl = new cm.LargeMapControl();
             _map.addControl(_largeMapControl, topRight);
         }
