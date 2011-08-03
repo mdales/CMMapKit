@@ -39,7 +39,7 @@ var cmNamespace = nil;
         var _div = document.createElement("div");
         _div.style.width = "100%";
         _div.style.height = "100%";
-        _div.style.background = "#00ff00";
+        _div.style.background = "#ffffff";
         _div.id = "CMMapViewDiv";
         
         self._DOMElement.appendChild(_div);    

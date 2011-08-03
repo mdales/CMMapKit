@@ -101,7 +101,6 @@ var cmNamespace = nil;
 {
     var cm = [CMMapView cmNamespace];	
     
-    console.log(_DOMMapElement);
     document.blah = _DOMMapElement;
 
 	_map.setCenter(new cm.LatLng(51.514, -0.137), 5);
